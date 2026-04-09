@@ -1,0 +1,51 @@
+# Environment — NEVER commit secrets
+.env
+.env.local
+*.env.local
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+*.egg-info/
+dist/
+.pytest_cache/
+
+# Node / n8n
+node_modules/
+.n8n/
+
+# Docker volumes and data
+volumes/
+data/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Temp and logs
+*.log
+.tmp/
+tmp/
+*.tmp
+
+# IDE
+.idea/
+.vscode/settings.json
+*.swp
+*.swo
+
+# Credentials (never commit)
+credentials.json
+token.json
+service-account*.json
+*.pem
+*.key
+
+# Build artifacts
+*.zip
+*.tar.gz

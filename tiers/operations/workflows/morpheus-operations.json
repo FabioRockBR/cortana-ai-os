@@ -1,0 +1,230 @@
+{
+  "name": "MORPHEUS — MCC Operations Agent",
+  "nodes": [
+    {
+      "id": "node-trigger",
+      "name": "MCC Trigger",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "public": false,
+        "initialMessages": ""
+      },
+      "webhookId": "morpheus-mcc-trigger"
+    },
+    {
+      "id": "node-exec-trigger",
+      "name": "Called by Cortana",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        200
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "node-agent",
+      "name": "MORPHEUS Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        300,
+        200
+      ],
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text || $json.chatInput }}",
+        "options": {
+          "maxIterations": 6,
+          "systemMessage": "You are MORPHEUS, an AI decision-support tool for Swiftair's Maintenance Control Center (MCC).\nYou help MCC staff make fast, accurate dispatch and defect management decisions.\n\nRespond in American English (en-US) by default. If the user writes in Brazilian Portuguese (pt-BR), respond in Brazilian Portuguese. Detect the CURRENT message language only — ignore history.\n\n## Knowledge Base\nYou have access to ONE knowledge base: the Swiftair Institutional KB.\nIt contains: Swiftair MOE, MEL, SMS procedures, inspection checks, quality manuals, and fleet-level technical documents.\nThis is operational-level knowledge for dispatch decisions — not deep AMM step-by-step tasks.\n\nAlways search the knowledge base for:\n- MEL item lookup (is the defect deferrable? what are the conditions/placard/maintenance procedures?)\n- CDL (Configuration Deviation List) items\n- Inspection check requirements\n- Swiftair internal procedures affecting dispatch\n- Fleet technical overview and systems knowledge\n\nIf a registration is mentioned, also query open TLB defects from Airtable.\n\n## Response Format (plain text only, no Markdown)\n1. Dispatch Assessment — Can the aircraft operate? Under what MEL conditions?\n2. MEL / Procedure Reference — Document name, section, page if found in KB\n3. Open Defects — list from Airtable if registration provided\n4. Recommended Actions — immediate steps for MCC\n\nKeep responses under 200 words. MCC needs fast decisions, not AMM tutorials.\n\n## Safety Rules\n- Never authorize dispatch of a safety-critical unresolved defect\n- If the MEL item is not found in the KB, say so explicitly — do not guess\n- Always cite the source document if available"
+        }
+      }
+    },
+    {
+      "id": "node-llm",
+      "name": "GPT-4.1",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        100,
+        400
+      ],
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "credentials": {
+        "openAiApi": {
+          "id": "__CRED_ID__",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "id": "node-memory",
+      "name": "Simple Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        300,
+        400
+      ],
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Called by Cortana').first().json.chat_id }}",
+        "contextWindowLength": 3
+      }
+    },
+    {
+      "id": "node-qdrant",
+      "name": "Swiftair Institutional KB",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+      "typeVersion": 1.3,
+      "position": [
+        500,
+        400
+      ],
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Search the Swiftair Institutional Knowledge Base. Use for MEL lookups, dispatch procedures, airworthiness requirements, inspection checks, Swiftair internal procedures, MOE, SMS, quality manuals, and fleet-level technical overview. Always search before answering any technical or regulatory question.",
+        "qdrantCollection": {
+          "__rl": true,
+          "value": "aircraft_maintenance_kb_v2",
+          "mode": "id"
+        },
+        "options": {
+          "topK": 5
+        }
+      },
+      "credentials": {
+        "qdrantApi": {
+          "id": "__CRED_ID__",
+          "name": "QdrantApi account"
+        }
+      }
+    },
+    {
+      "id": "node-embeddings",
+      "name": "Gemini Embeddings",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        500,
+        600
+      ],
+      "parameters": {
+        "modelName": "models/gemini-embedding-2-preview"
+      },
+      "credentials": {
+        "googlePalmApi": {
+          "id": "__CRED_ID__",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "id": "node-telegram",
+      "name": "Send to Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        600,
+        200
+      ],
+      "parameters": {
+        "chatId": "={{ $('Called by Cortana').first().json.chat_id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "credentials": {
+        "telegramApi": {
+          "id": "__CRED_ID__",
+          "name": "Telegram account"
+        }
+      },
+      "webhookId": "2634cec0-c26f-4de3-acb1-7caf591a6a91"
+    }
+  ],
+  "connections": {
+    "Called by Cortana": {
+      "main": [
+        [
+          {
+            "node": "MORPHEUS Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MORPHEUS Agent": {
+      "main": [
+        [
+          {
+            "node": "Send to Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GPT-4.1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "MORPHEUS Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "MORPHEUS Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Swiftair Institutional KB": {
+      "ai_tool": [
+        [
+          {
+            "node": "MORPHEUS Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini Embeddings": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Swiftair Institutional KB",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true
+  },
+  "active": true
+}

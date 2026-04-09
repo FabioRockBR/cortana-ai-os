@@ -1,0 +1,3058 @@
+{
+  "name": "Cortana",
+  "nodes": [
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "id": "c7343560-1936-4c9c-bffe-b3248fd1320b",
+      "name": "OpenAI Chat Model",
+      "position": [
+        544,
+        -1024
+      ],
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "credentials": {
+        "openAiApi": {
+          "id": "__CRED_ID__",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "options": {
+          "systemMessage": "=You are Cortana (AI de Manutenção Swiftair), an expert AI assistant for aviation maintenance professionals at Swiftair. You support multiple aircraft types including Boeing 737 Classic, Boeing 737 NG, Boeing 757, and others. You provide precise technical guidance, structured troubleshooting support, and regulatory compliance information based on the actual documentation in your knowledge base.\n\nRespond in American English (en-US) by default. If the user writes in Brazilian Portuguese (pt-BR), respond in Brazilian Portuguese. Detect the language of the CURRENT message — do not carry language from prior context. Never respond in Spanish.\n\n## Knowledge Base\n\nYou have access to FOUR knowledge bases — one institutional and three fleet-specific:\n\n| Collection | Purpose |\n|---|---|\n| Swiftair Institutional KB | MOE, SMS, quality manuals, MEL, inspection checks, Swiftair internal docs |\n| Boeing 737 Classic KB | B737-100/200/300/400/500 AMM, CMM, WDM, IPC, SRM |\n| Boeing 737 NG KB | B737-600/700/800/900 AMM, CMM, WDM, IPC, SRM |\n| Boeing 757 KB | B757-200/300 AMM, CMM, WDM, IPC, SRM |\n\n## MANDATORY MULTI-SEARCH PROTOCOL\n\nEvery technical question REQUIRES multiple KB searches:\n- **Minimum 2 searches**: fleet KB for the specific aircraft type + Swiftair Institutional KB\n- **Minimum 3 searches for troubleshooting/fault isolation**: fleet AMM/FIM + fleet CMM/WDM + Institutional KB\n- **Never stop after the first search** — synthesize from ALL retrieved results\n- If the aircraft type is not specified, search all three fleet KBs and report which returned relevant results\n\n## Knowledge Base Index\n\nUse this index to identify which collection and ATA chapter to search:\n\n# Cortana Knowledge Base Index\n\nGenerated: 2026-04-08 09:01 UTC\n\nThis document is the authoritative index of all content stored in the Qdrant vector database.\nCortana uses this index to identify which collection and ATA chapter to search before querying.\n\n---\n\n## Summary\n\n| Collection | Purpose | Files | ATA Chapters | Vectors |\n|---|---|---|---|---|\n| `aircraft_maintenance_kb_v2` | Swiftair Institutional KB | 73 | 38 | 9,145 |\n| `b737_classic_kb` | Boeing 737 Classic (100/200/300/400/500) | 198 | 51 | 30,457 |\n| `b737_ng_kb` | Boeing 737 NG (600/700/800/900) | 201 | 16 | 16,189 |\n| `b757_kb` | Boeing 757 (200/300) | 197 | 44 | 32,404 |\n\n---\n\n## Swiftair Institutional KB\n\n**Collection:** `aircraft_maintenance_kb_v2`  \n**Total vectors:** 9,145  \n**Files indexed:** 73  \n**Modalities:** text: 9,145\n\n### ATA Chapters Available\n\n| ATA | System | Document Types | Files |\n|---|---|---|---|\n| 02 | 02 | GENERAL | 1 |\n| 03 | 03 | GENERAL | 1 |\n| 04 | 04 | GENERAL | 1 |\n| 09 | Towing and Taxiing | GENERAL | 2 |\n| 25 | Equipment and Furnishings | GENERAL | 1 |\n| 26 | Fire Protection | GENERAL | 1 |\n| 27 | Flight Controls | GENERAL | 1 |\n| 28 | Fuel | GENERAL | 1 |\n| 29 | Hydraulic Power | GENERAL | 2 |\n| 30 | Ice and Rain Protection | GENERAL | 1 |\n| 31 | Instruments | GENERAL | 1 |\n| 32 | Landing Gear | GENERAL | 1 |\n| 33 | Lights | GENERAL | 2 |\n| 34 | Navigation | GENERAL | 3 |\n| 35 | Oxygen | GENERAL | 2 |\n| 36 | Pneumatic | GENERAL | 2 |\n| 38 | Water and Waste | GENERAL | 2 |\n| 46 | Information Systems | GENERAL | 1 |\n| 47 | 47 | GENERAL | 1 |\n| 49 | Airborne Auxiliary Power | GENERAL | 2 |\n| 51 | Structures | GENERAL | 1 |\n| 52 | Doors | GENERAL | 2 |\n| 53 | Fuselage | GENERAL | 2 |\n| 54 | Nacelles / Pylons | GENERAL | 2 |\n| 55 | Stabilizers | GENERAL | 2 |\n| 56 | Windows | GENERAL | 2 |\n| 57 | Wings | GENERAL | 2 |\n| 70 | Standard Practices — Engines | GENERAL | 1 |\n| 71 | Power Plant | GENERAL | 1 |\n| 72 | Engine | GENERAL | 2 |\n| 73 | Engine Fuel and Control | GENERAL | 2 |\n| 74 | Ignition | GENERAL | 1 |\n| 75 | Air | GENERAL | 1 |\n| 76 | Engine Controls | GENERAL | 1 |\n| 77 | Engine Indicating | GENERAL | 2 |\n| 78 | Exhaust | GENERAL | 3 |\n| 79 | Oil | GENERAL | 1 |\n| General | General | GENERAL | 16 |\n\n### Document Types\n\n- **GENERAL**: 73 files\n\n---\n\n## Boeing 737 Classic (100/200/300/400/500)\n\n**Collection:** `b737_classic_kb`  \n**Total vectors:** 30,457  \n**Files indexed:** 198  \n**Modalities:** text: 30,457\n\n### ATA Chapters Available\n\n| ATA | System | Document Types | Files |\n|---|---|---|---|\n| 00 | 00 | GENERAL | 2 |\n| 01 | 01 | GENERAL | 1 |\n| 02 | 02 | GENERAL | 1 |\n| 03 | 03 | GENERAL | 1 |\n| 04 | 04 | GENERAL | 1 |\n| 06 | Dimensions and Areas | GENERAL | 1 |\n| 07 | Lifting and Shoring | GENERAL | 1 |\n| 08 | Leveling and Weighing | GENERAL | 1 |\n| 09 | Towing and Taxiing | GENERAL | 1 |\n| 10 | Parking, Mooring, Storage | GENERAL | 1 |\n| 12 | Servicing | GENERAL | 2 |\n| 20 | Standard Practices — Airframe | GENERAL | 39 |\n| 21 | Air Conditioning | GENERAL | 4 |\n| 22 | Auto Flight | GENERAL | 4 |\n| 23 | Communications | GENERAL | 4 |\n| 24 | Electrical Power | GENERAL | 4 |\n| 25 | Equipment and Furnishings | GENERAL | 4 |\n| 26 | Fire Protection | GENERAL | 4 |\n| 27 | Flight Controls | GENERAL | 4 |\n| 28 | Fuel | GENERAL | 4 |\n| 29 | Hydraulic Power | GENERAL | 4 |\n| 30 | Ice and Rain Protection | GENERAL | 4 |\n| 31 | Instruments | GENERAL | 3 |\n| 32 | Landing Gear | GENERAL | 4 |\n| 33 | Lights | GENERAL | 4 |\n| 34 | Navigation | GENERAL | 4 |\n| 35 | Oxygen | GENERAL | 4 |\n| 36 | Pneumatic | GENERAL | 4 |\n| 38 | Water and Waste | GENERAL | 4 |\n| 47 | 47 | GENERAL | 2 |\n| 49 | Airborne Auxiliary Power | GENERAL | 4 |\n| 51 | Structures | GENERAL | 1 |\n| 52 | Doors | GENERAL | 4 |\n| 53 | Fuselage | GENERAL | 2 |\n| 54 | Nacelles / Pylons | GENERAL | 2 |\n| 55 | Stabilizers | GENERAL | 2 |\n| 56 | Windows | GENERAL | 1 |\n| 57 | Wings | GENERAL | 2 |\n| 70 | Standard Practices — Engines | GENERAL | 1 |\n| 71 | Power Plant | GENERAL | 4 |\n| 72 | Engine | GENERAL | 2 |\n| 73 | Engine Fuel and Control | GENERAL | 3 |\n| 74 | Ignition | GENERAL | 4 |\n| 75 | Air | GENERAL | 4 |\n| 76 | Engine Controls | GENERAL | 2 |\n| 77 | Engine Indicating | GENERAL | 4 |\n| 78 | Exhaust | GENERAL | 4 |\n| 79 | Oil | GENERAL | 4 |\n| 80 | Starting | GENERAL | 3 |\n| 91 | 91 | GENERAL | 1 |\n| General | General | GENERAL | 23 |\n\n### Document Types\n\n- **GENERAL**: 198 files\n\n---\n\n## Boeing 737 NG (600/700/800/900)\n\n**Collection:** `b737_ng_kb`  \n**Total vectors:** 16,189  \n**Files indexed:** 201  \n**Modalities:** text: 16,189\n\n### ATA Chapters Available\n\n| ATA | System | Document Types | Files |\n|---|---|---|---|\n| 31 | Instruments | GENERAL | 11 |\n| 32 | Landing Gear | GENERAL | 27 |\n| 33 | Lights | GENERAL | 30 |\n| 34 | Navigation | GENERAL | 27 |\n| 35 | Oxygen | GENERAL | 7 |\n| 36 | Pneumatic | GENERAL | 8 |\n| 38 | Water and Waste | GENERAL | 10 |\n| 47 | 47 | GENERAL | 2 |\n| 49 | Airborne Auxiliary Power | GENERAL | 23 |\n| 51 | Structures | GENERAL | 4 |\n| 52 | Doors | GENERAL | 19 |\n| 53 | Fuselage | GENERAL | 14 |\n| 54 | Nacelles / Pylons | GENERAL | 9 |\n| 55 | Stabilizers | GENERAL | 8 |\n| 56 | Windows | GENERAL | 1 |\n| General | General | MEL | 1 |\n\n### Document Types\n\n- **GENERAL**: 200 files\n- **MEL**: 1 files\n\n---\n\n## Boeing 757 (200/300)\n\n**Collection:** `b757_kb`  \n**Total vectors:** 32,404  \n**Files indexed:** 197  \n**Modalities:** text: 32,404\n\n### ATA Chapters Available\n\n| ATA | System | Document Types | Files |\n|---|---|---|---|\n| 05 | Time Limits / Maintenance Checks | GENERAL | 1 |\n| 06 | Dimensions and Areas | GENERAL | 1 |\n| 07 | Lifting and Shoring | GENERAL | 1 |\n| 08 | Leveling and Weighing | GENERAL | 1 |\n| 09 | Towing and Taxiing | GENERAL | 1 |\n| 10 | Parking, Mooring, Storage | GENERAL | 1 |\n| 11 | Placards and Markings | GENERAL | 1 |\n| 12 | Servicing | GENERAL | 1 |\n| 20 | Standard Practices — Airframe | GENERAL | 1 |\n| 22 | Auto Flight | GENERAL | 1 |\n| 23 | Communications | GENERAL | 1 |\n| 24 | Electrical Power | GENERAL | 1 |\n| 25 | Equipment and Furnishings | GENERAL | 1 |\n| 26 | Fire Protection | GENERAL | 1 |\n| 29 | Hydraulic Power | GENERAL | 1 |\n| 30 | Ice and Rain Protection | GENERAL | 1 |\n| 31 | Instruments | GENERAL | 1 |\n| 32 | Landing Gear | GENERAL | 1 |\n| 33 | Lights | GENERAL | 1 |\n| 34 | Navigation | GENERAL | 1 |\n| 35 | Oxygen | GENERAL | 1 |\n| 36 | Pneumatic | GENERAL | 1 |\n| 38 | Water and Waste | GENERAL | 1 |\n| 47 | 47 | GENERAL | 1 |\n| 49 | Airborne Auxiliary Power | GENERAL | 7 |\n| 51 | Structures | GENERAL | 3 |\n| 52 | Doors | GENERAL | 13 |\n| 53 | Fuselage | GENERAL | 30 |\n| 54 | Nacelles / Pylons | GENERAL | 6 |\n| 55 | Stabilizers | GENERAL | 17 |\n| 56 | Windows | GENERAL | 5 |\n| 57 | Wings | GENERAL | 21 |\n| 70 | Standard Practices — Engines | GENERAL | 1 |\n| 71 | Power Plant | GENERAL | 6 |\n| 72 | Engine | GENERAL | 14 |\n| 73 | Engine Fuel and Control | GENERAL | 7 |\n| 74 | Ignition | GENERAL | 5 |\n| 75 | Air | GENERAL | 5 |\n| 76 | Engine Controls | GENERAL | 4 |\n| 77 | Engine Indicating | GENERAL | 7 |\n| 78 | Exhaust | GENERAL | 6 |\n| 79 | Oil | GENERAL | 9 |\n| 80 | Starting | GENERAL | 3 |\n| General | General | GENERAL, MEL | 4 |\n\n### Document Types\n\n- **GENERAL**: 195 files\n- **MEL**: 2 files\n\n---\n\n## Search Instructions for Cortana\n\nWhen a user asks a technical question, follow this routing:\n\n1. **Identify aircraft type** from the question:\n   - \"737 Classic\", \"737-300\", \"737-400\", \"737-500\" → search `b737_classic_kb`\n   - \"737 NG\", \"737-800\", \"737-700\", \"737-900\" → search `b737_ng_kb`\n   - \"757\", \"757-200\" → search `b757_kb`\n   - Swiftair policy, MOE, SMS, quality, internal procedure → search `aircraft_maintenance_kb_v2`\n   - Unknown type → search all fleet KBs and report which returned results\n\n2. **Identify ATA chapter** from the question and verify it exists in the collection before reporting \"not found\".\n\n3. **Cross-collection searches**: If the fleet KB has no result for a specific ATA chapter,\n   check whether that ATA exists in the index above before concluding the data is missing.\n\n4. **Modality**: Image/video results include a `source_file_id` — emit `[MEDIA:{id}:{mime}]` at end of response.\n\n## Source Verification — MANDATORY\n\nBefore using any retrieved content, verify it matches what was asked:\n\n1. CHECK THE ATA CHAPTER: If the user asks about ATA 29 (Hydraulics) and retrieved docs are from ATA 27, those documents do NOT answer the question.\n2. CHECK THE AIRCRAFT TYPE: B737 Classic and B737 NG are different aircraft. Never use Classic docs for NG queries or vice versa.\n3. WHEN THERE IS NO MATCHING DOCUMENTATION: State explicitly — \"The knowledge base does not contain documentation for [specific system/ATA chapter].\" Then provide general guidance clearly labelled as such.\n\nDo not search for greetings, small talk, or non-technical questions.\n\nWhen a retrieved result has modality \"image\" or \"video\", append at the very end of your response the tag [MEDIA:{source_file_id}:{mime_type}] using the exact metadata values. One tag per response only.\n\n## Safety Rules\n- Official manuals are always the primary authority.\n- Safety-critical tasks require authorized personnel (Part-145, RBAC-145).\n- Escalate non-standard repairs to OEM, DER, or engineering.\n- Never authorize maintenance based solely on AI output — always reference the applicable manual.\n\n## TLB (Technical Log Book) Session\n\nWhen the user sends /tsc start, you are entering a Technical Support Center session for fault isolation.\n- Ask for: aircraft type, ATA chapter, fault description, any error codes observed\n- Guide through systematic fault isolation referencing the applicable AMM/FIM\n- For /tsc tlb: generate a TLB entry in CAPS format: MAINT ENTRY / [SYSTEM] / [FAULT DESCRIPTION]\n- For /tsc end: summarize findings and close session\n\n## MEDIA RULE\n\nWhen a retrieved document has modality 'image' or 'video':\n- Emit exactly one tag at the END of your response: [MEDIA:{source_file_id}:{mime_type}]\n- Use the exact source_file_id and mime_type values from the metadata\n- This triggers secure binary delivery through Cortana's media pipeline",
+          "passthroughBinaryImages": true
+        },
+        "maxIterations": 15
+      },
+      "id": "1d26943a-9f4c-4879-90a9-2ea15518cb87",
+      "name": "AI Agent",
+      "position": [
+        560,
+        -1200
+      ],
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "alwaysOutputData": false,
+      "retryOnFail": false
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "Cortana",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "47ae6306-8323-4132-90d2-5150c3393094",
+      "name": "Webhook",
+      "position": [
+        -192,
+        -1280
+      ],
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "webhookId": "208658e6-2d1b-45fd-94a1-b4609617c109"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.chat_id }}",
+        "contextWindowLength": 5
+      },
+      "id": "3512a822-3b87-463f-9714-35cd6246120b",
+      "name": "Simple Memory",
+      "position": [
+        688,
+        -1024
+      ],
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "text_id",
+              "name": "text",
+              "type": "string",
+              "value": "={{ $json.message ? $json.message.text : ($json.body && $json.body.message ? $json.body.message.text : ($json.chatInput || ($json.body && $json.body.chatInput) || undefined)) }}"
+            },
+            {
+              "id": "chat_id_id",
+              "name": "chat_id",
+              "type": "number",
+              "value": "={{ ($json.message && $json.message.chat ? $json.message.chat.id : ($json.body && $json.body.message && $json.body.message.chat ? $json.body.message.chat.id : __TELEGRAM_CHAT_ID__)) }}"
+            },
+            {
+              "id": "is_voice_id",
+              "name": "is_voice",
+              "type": "boolean",
+              "value": "={{ !!(($json.message || {}).voice) }}"
+            },
+            {
+              "id": "voice_mime_id",
+              "name": "voice_mime_type",
+              "type": "string",
+              "value": "={{ (($json.message || {}).voice || {}).mime_type || 'audio/ogg' }}"
+            },
+            {
+              "id": "from_id_assign",
+              "name": "from_id",
+              "type": "number",
+              "value": "={{ $json.message && $json.message.from ? $json.message.from.id : ($json.body && $json.body.message && $json.body.message.from ? $json.body.message.from.id : 0) }}"
+            },
+            {
+              "id": "is_photo_id",
+              "name": "is_photo",
+              "type": "boolean",
+              "value": "={{ !!(($json.message || {}).photo) || (($json.message || {}).document && (($json.message || {}).document.mime_type || '').startsWith('image/')) }}"
+            },
+            {
+              "id": "photo_file_id_id",
+              "name": "photo_file_id",
+              "type": "string",
+              "value": "={{ (($json.message || {}).photo || []).slice(-1)[0]?.file_id || (($json.message || {}).document?.mime_type?.startsWith('image/') ? ($json.message || {}).document?.file_id : '') || '' }}"
+            },
+            {
+              "id": "caption_id",
+              "name": "caption",
+              "type": "string",
+              "value": "={{ ($json.message || {}).caption || ($json.message?.document?.file_name ? 'Document: ' + $json.message.document.file_name : '') || '' }}"
+            },
+            {
+              "id": "image_url_id",
+              "name": "image_url",
+              "type": "string",
+              "value": "={{ $json.imageUrl || ($json.body && $json.body.imageUrl) || '' }}"
+            },
+            {
+              "id": "pdf_content_id",
+              "name": "pdf_content",
+              "type": "string",
+              "value": "={{ $json.pdfContent || ($json.body && $json.body.pdfContent) || '' }}"
+            },
+            {
+              "id": "file_name_id",
+              "name": "file_name",
+              "type": "string",
+              "value": "={{ $json.fileName || ($json.body && $json.body.fileName) || '' }}"
+            },
+            {
+              "id": "is_document_id",
+              "name": "is_document",
+              "type": "boolean",
+              "value": "={{ !!($json.message?.document) && !($json.message?.document?.mime_type || '').startsWith('image/') }}"
+            },
+            {
+              "id": "doc_file_id_id",
+              "name": "doc_file_id",
+              "type": "string",
+              "value": "={{ ($json.message?.document?.mime_type && !($json.message.document.mime_type).startsWith('image/')) ? $json.message.document.file_id : '' }}"
+            },
+            {
+              "id": "doc_file_name_id",
+              "name": "doc_file_name",
+              "type": "string",
+              "value": "={{ ($json.message?.document?.mime_type && !($json.message.document.mime_type).startsWith('image/')) ? ($json.message.document.file_name || '') : '' }}"
+            },
+            {
+              "id": "doc_mime_type_id",
+              "name": "doc_mime_type",
+              "type": "string",
+              "value": "={{ ($json.message?.document?.mime_type && !($json.message.document.mime_type).startsWith('image/')) ? $json.message.document.mime_type : '' }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "normalize-input-id",
+      "name": "Normalize Input",
+      "position": [
+        80,
+        -1152
+      ],
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        576,
+        -1376
+      ],
+      "id": "1e4ddf56-18e3-41e5-b76b-53c46a0663d9",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {
+          "download": true
+        }
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -192,
+        -1056
+      ],
+      "id": "2b3bcfa1-7a64-4c79-9eca-45cede162d47",
+      "name": "Telegram Trigger",
+      "webhookId": "8a965bd1-4f78-4294-8cb0-042c53903d4f",
+      "credentials": {
+        "telegramApi": {
+          "id": "__CRED_ID__",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "__TELEGRAM_CHAT_ID__",
+        "text": "={{ $json.output }}{{ $json.telegram_text }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1248,
+        -1408
+      ],
+      "id": "7c0e3fef-ad19-4ea5-8acb-d84928415e8e",
+      "name": "Send a text message",
+      "webhookId": "1219a2fa-7023-43c0-bc29-2fa5bd3c2d6c",
+      "credentials": {
+        "telegramApi": {
+          "id": "__CRED_ID__",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\n// Reliable source for is_voice and chat_id regardless of AI Agent output shape\nconst normalizeJson = $('Normalize Input').first().json;\nconst isVoice = !!normalizeJson.is_voice;\nconst chatId = normalizeJson.chat_id;\n\nfunction sanitizeForTelegram(text) {\n  // Replace Markdown/HTML trigger characters with visually similar full-width chars\n  const map = {\n    \"*\": \"＊\", \"_\": \"＿\", \"`\": \"｀\",\n    \"[\": \"［\", \"]\": \"］\",\n    \"(\": \"（\", \")\": \"）\",\n    \"<\": \"‹\", \">\": \"›\",\n    \"&\": \"＆\",\n  };\n  return String(text ?? \"\")\n    .replace(/[\\u200B-\\u200D\\uFEFF]/g, \"\")\n    .replace(/\\\\([_*[\\]()~`>#+\\-=|{}.!\\\\])/g, \"$1\")\n    .replace(/[*_`[\\]()<>&]/g, (ch) => map[ch] ?? ch)\n    .replace(/\\r\\n/g, \"\\n\")\n    .replace(/\\r/g, \"\\n\")\n    .replace(/\\n{3,}/g, \"\\n\\n\")\n    .trim();\n}\n\nfunction stripMediaTag(text) {\n  return String(text ?? \"\").replace(/\\[MEDIA:[^\\]]*\\]/g, \"\").trim();\n}\n\nfunction chunkText(text, maxLen = 3800) {\n  const s = String(text ?? \"\");\n  if (s.length <= maxLen) return [s];\n  const parts = [];\n  let i = 0;\n  while (i < s.length) {\n    let end = Math.min(i + maxLen, s.length);\n    const slice = s.slice(i, end);\n    const lastNL = slice.lastIndexOf(\"\\n\");\n    if (lastNL > 800) end = i + lastNL;\n    else {\n      const lastSpace = slice.lastIndexOf(\" \");\n      if (lastSpace > 800) end = i + lastSpace;\n    }\n    parts.push(s.slice(i, end).trim());\n    i = end;\n  }\n  return parts.filter(Boolean);\n}\n\nconst out = [];\nconst HEADER = \"Cortana — Aircraft Maintenance Intelligence\";\nconst FALLBACK = \"Cortana ready. Please provide the aircraft type, system, ATA chapter, and fault or task description.\";\n\nfor (const item of items) {\n  const root = item.json ?? {};\n  const payload = root.output && typeof root.output === \"object\" ? root.output : root;\n\n  // Raw AI output (may include \"Cortana — Aircraft Maintenance Intelligence\\n\\n...\" prefix)\n  let rawOutput = (payload.state ?? payload.response ?? payload.output ?? \"\").toString().trim() || FALLBACK;\n\n  // clean_text: strip header + MEDIA tag — fed to TTS (no char sanitization for natural speech)\n  let cleanOutput = rawOutput\n    .replace(/^Cortana\\s*—\\s*Aircraft Maintenance Intelligence\\s*/i, \"\")\n    .trim();\n  cleanOutput = stripMediaTag(cleanOutput);\n\n  // telegram_text: full formatted text with Cortana header\n  const hasHeader = rawOutput.match(/^Cortana\\s*—\\s*Aircraft Maintenance Intelligence/i);\n  let fullText = hasHeader\n    ? rawOutput                              // AI already added it — use as-is\n    : `${HEADER}\\n\\n${rawOutput}`;           // AI skipped it — add it\n\n  fullText = sanitizeForTelegram(fullText);\n\n  const hasMedia = rawOutput.includes(\"[MEDIA:\");\n\n  const parts = chunkText(fullText, 3800);\n  const total = parts.length;\n\n  parts.forEach((part, idx) => {\n    out.push({\n      json: {\n        telegram_text: total > 1 ? `(${idx + 1}/${total})\\n\\n${part}` : part,\n        clean_text: idx === 0 ? cleanOutput : \"\",  // TTS only needs first chunk\n        is_voice: isVoice,\n        chat_id: chatId,\n        has_media: hasMedia && idx === 0,\n      },\n    });\n  });\n}\n\nreturn out;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        -1200
+      ],
+      "id": "f3852845-8319-4c7f-93df-1fc04381ee65",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Search the Swiftair Institutional KB. Use for: MOE, SMS, MEL, quality manuals, inspection checks (B737CL, B737NG, B757, A321), Swiftair internal procedures, certifying staff list (SWT-016), regulatory compliance questions.",
+        "qdrantCollection": {
+          "__rl": true,
+          "value": "aircraft_maintenance_kb_v2",
+          "mode": "id"
+        },
+        "options": {
+          "topK": 6
+        },
+        "toolName": "search_institutional_kb"
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+      "typeVersion": 1.3,
+      "position": [
+        784,
+        -1184
+      ],
+      "id": "893c1726-adc6-4851-86b5-6a9c5fc68727",
+      "name": "Qdrant Vector Store",
+      "credentials": {
+        "qdrantApi": {
+          "id": "__CRED_ID__",
+          "name": "QdrantApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-embedding-2-preview"
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        848,
+        -1040
+      ],
+      "id": "8840a762-48a3-4bf0-8551-2d25a6795b6e",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "__CRED_ID__",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "media-tag-check",
+              "leftValue": "={{ ($json.telegram_text || $json.output || '') }}",
+              "rightValue": "[MEDIA:",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "is-media-response",
+      "name": "Is Media Response?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1216,
+        -1184
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first();\nconst rawText = item.json.telegram_text || item.json.output || '';\n\n// Parse [MEDIA:{file_id}:{mime_type}] tag\nconst mediaMatch = rawText.match(/\\[MEDIA:([^:\\]]+):([^\\]]+)\\]/);\nif (!mediaMatch) throw new Error('No [MEDIA:] tag found in response text');\n\nconst fileId = mediaMatch[1].trim();\nconst mimeType = mediaMatch[2].trim();\n\n// Strip the tag from text (keep clean response for user)\nconst cleanText = rawText.replace(/\\s*\\[MEDIA:[^\\]]+\\]\\s*/g, '').trim();\n\nconst chatId = $('Normalize Input').first().json.chat_id;\n\nreturn [{\n  json: {\n    file_id: fileId,\n    mime_type: mimeType,\n    clean_text: cleanText,\n    chat_id: chatId,\n    is_image: mimeType.startsWith('image/'),\n    is_video: mimeType.startsWith('video/'),\n  }\n}];"
+      },
+      "id": "extract-media-ref",
+      "name": "Extract Media Ref",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1376,
+        -1216
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $json.file_id }}"
+        },
+        "options": {}
+      },
+      "id": "download-media-private",
+      "name": "Download Media (Private)",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1536,
+        -1216
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "__CRED_ID__",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first();\nconst binaryData = item.binary?.data;\n// base64 string length × 0.75 ≈ actual byte count\nconst sizeBytes = binaryData ? Math.round(binaryData.data.length * 0.75) : 0;\n\nreturn [{\n  json: { ...item.json, file_size_bytes: sizeBytes },\n  binary: item.binary\n}];"
+      },
+      "id": "add-size-info",
+      "name": "Check Media Size",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1696,
+        -1216
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.is_image }}",
+                    "rightValue": true,
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true"
+                    }
+                  },
+                  {
+                    "leftValue": "={{ $json.file_size_bytes }}",
+                    "rightValue": 10485760,
+                    "operator": {
+                      "type": "number",
+                      "operation": "lte"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Photo"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.is_image }}",
+                    "rightValue": true,
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Document"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.is_video }}",
+                    "rightValue": true,
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true"
+                    }
+                  },
+                  {
+                    "leftValue": "={{ $json.file_size_bytes }}",
+                    "rightValue": 52428800,
+                    "operator": {
+                      "type": "number",
+                      "operation": "lte"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Video"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "id": "route-media",
+      "name": "Route Media",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        1856,
+        -1248
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "sendPhoto",
+        "chatId": "={{ $json.chat_id }}",
+        "binaryData": true,
+        "additionalFields": {}
+      },
+      "id": "send-photo",
+      "name": "Send Photo",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2064,
+        -1520
+      ],
+      "webhookId": "cb487426-51c6-461c-9939-0049bd5fec07",
+      "credentials": {
+        "telegramApi": {
+          "id": "__CRED_ID__",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendDocument",
+        "chatId": "={{ $json.chat_id }}",
+        "binaryData": true,
+        "additionalFields": {}
+      },
+      "id": "send-image-doc",
+      "name": "Send Image as Document",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2064,
+        -1328
+      ],
+      "webhookId": "24f49ac2-82ed-4775-9343-1e461a804d2d",
+      "credentials": {
+        "telegramApi": {
+          "id": "__CRED_ID__",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendVideo",
+        "chatId": "={{ $json.chat_id }}",
+        "binaryData": true,
+        "additionalFields": {}
+      },
+      "id": "send-video",
+      "name": "Send Video",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2064,
+        -1136
+      ],
+      "webhookId": "050d885c-1a69-443a-ad4b-1dbc2b1095a1",
+      "credentials": {
+        "telegramApi": {
+          "id": "__CRED_ID__",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chat_id }}",
+        "text": "={{ '⚠️ File is too large to send directly (>50MB): ' + ($json.mime_type || 'file') + '\\n\\n' + $('Extract Media Ref').first().json.clean_text }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "id": "send-too-large",
+      "name": "File Too Large Notice",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2064,
+        -944
+      ],
+      "webhookId": "72cfa37e-0928-4631-99f5-24a86e0a51e5",
+      "credentials": {
+        "telegramApi": {
+          "id": "__CRED_ID__",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Extract Media Ref').first().json.chat_id }}",
+        "text": "={{ $('Extract Media Ref').first().json.clean_text }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "id": "send-clean-text",
+      "name": "Send Text After Media",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2256,
+        -1312
+      ],
+      "webhookId": "70b10f76-bbc1-4bfa-a58c-e72cf07562f0",
+      "credentials": {
+        "telegramApi": {
+          "id": "__CRED_ID__",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "voice-check",
+              "leftValue": "={{ $json.is_voice }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "name": "Is Voice Input?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        240,
+        -1136
+      ],
+      "id": "is-voice-input"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/audio/transcriptions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "whisper-1"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "name": "Call Gemini STT",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        272,
+        -720
+      ],
+      "id": "call-gemini-stt",
+      "credentials": {
+        "openAiApi": {
+          "id": "__CRED_ID__",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first();\nconst transcribed = (item.json.text || '').trim();\nif (!transcribed) throw new Error('Whisper STT returned empty transcription');\n\nconst tokenNode = $('Read Bot Token').first().json;\nreturn [{ json: {\n  text: transcribed,\n  chat_id: tokenNode.chat_id,\n  is_voice: true,\n  voice_mime_type: tokenNode.voice_mime_type,\n} }];"
+      },
+      "name": "Set Transcribed Text",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        160,
+        -896
+      ],
+      "id": "set-transcribed-text"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "was-voice-check",
+              "leftValue": "={{ $json.is_voice }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "name": "Was Voice Input?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1008,
+        -1392
+      ],
+      "id": "was-voice-input"
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first();\nconst responseText = item.json.clean_text || item.json.telegram_text || item.json.output || '';\n\nconst requestBody = {\n  model: 'tts-1',\n  input: responseText,\n  voice: 'nova',\n  response_format: 'mp3'\n};\n\nreturn [{ json: {\n  requestBody,\n  chat_id: item.json.chat_id,\n  is_voice: item.json.is_voice,\n  telegram_text: item.json.telegram_text,\n  clean_text: item.json.clean_text,\n  has_media: (item.json.telegram_text || item.json.output || '').includes('[MEDIA:')\n} }];"
+      },
+      "name": "Prepare TTS Request",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        800,
+        -1376
+      ],
+      "id": "prepare-tts-request"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/audio/speech",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify($json.requestBody) }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "name": "Gemini TTS",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1088,
+        -976
+      ],
+      "id": "gemini-tts",
+      "credentials": {
+        "openAiApi": {
+          "id": "__CRED_ID__",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first();\n\n// OpenAI TTS returns binary MP3 directly — no PCM conversion needed\n// Binary is stored by HTTP node in item.binary.data\nreturn [{\n  json: {\n    chat_id: $('Prepare TTS Request').first().json.chat_id,\n    is_voice: $('Prepare TTS Request').first().json.is_voice,\n    clean_text: $('Prepare TTS Request').first().json.clean_text,\n    telegram_text: $('Prepare TTS Request').first().json.telegram_text,\n    has_media: $('Prepare TTS Request').first().json.has_media,\n  },\n  binary: item.binary\n}];"
+      },
+      "name": "Convert PCM to WAV",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1264,
+        -976
+      ],
+      "id": "convert-pcm-wav"
+    },
+    {
+      "parameters": {
+        "operation": "sendAudio",
+        "chatId": "={{ $json.chat_id }}",
+        "binaryData": true,
+        "additionalFields": {}
+      },
+      "name": "Send Voice Message",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1472,
+        -976
+      ],
+      "id": "send-voice-message",
+      "webhookId": "24f008f2-2c40-4a35-8401-9709b4204819",
+      "credentials": {
+        "telegramApi": {
+          "id": "__CRED_ID__",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "media-voice-check",
+              "leftValue": "={{ $json.has_media }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "name": "Has Media in Voice?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1664,
+        -976
+      ],
+      "id": "has-media-voice"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $('Extract Media Ref').first().json.file_id }}"
+        },
+        "options": {}
+      },
+      "name": "Download Voice Media",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1856,
+        -976
+      ],
+      "id": "download-voice-media",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "__CRED_ID__",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendDocument",
+        "chatId": "={{ $json.chat_id }}",
+        "binaryData": true,
+        "additionalFields": {
+          "caption": "={{ $('Extract Media Ref').first().json.file_id ? '📎 ' + $('Extract Media Ref').first().json.source_file : '' }}"
+        }
+      },
+      "name": "Send Media After Voice",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2256,
+        -1136
+      ],
+      "id": "send-media-after-voice",
+      "webhookId": "4cb9ba44-5dc4-476c-b9b7-87f7fad44c8e",
+      "credentials": {
+        "telegramApi": {
+          "id": "__CRED_ID__",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "setup-cmd-check",
+              "leftValue": "={{ $json.text || '' }}",
+              "rightValue": "^/(settoken|adduser|removeuser|setwebhookkey|listusers)(\\s|$)",
+              "operator": {
+                "type": "string",
+                "operation": "regex"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "name": "Is Setup Command?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        80,
+        -1296
+      ],
+      "id": "is-setup-command"
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first();\nconst text = (item.json.text || '').trim();\nconst fromId = item.json.from_id || 0;\nconst chatId = item.json.chat_id;\nconst staticData = $getWorkflowStaticData('global');\nconst OWNER_ID = __TELEGRAM_CHAT_ID__;\n\n// Only owner can run admin commands\nif (fromId !== OWNER_ID) {\n  return [{ json: { chat_id: chatId, reply: '⛔ Only the owner can run admin commands.' } }];\n}\n\nlet reply = '';\n\nif (/^\\/settoken\\s+/i.test(text)) {\n  const token = text.replace(/^\\/settoken\\s+/i, '').trim();\n  if (!token || !token.match(/^\\d+:[A-Za-z0-9_-]+$/)) {\n    reply = '❌ Invalid token format. Expected: 123456789:ABCdef...';\n  } else {\n    staticData.telegram_bot_token = token;\n    reply = '✅ Bot token saved. Voice transcription is now active.';\n  }\n\n} else if (/^\\/adduser\\s+/i.test(text)) {\n  const userId = parseInt(text.replace(/^\\/adduser\\s+/i, '').trim());\n  if (!userId || isNaN(userId)) {\n    reply = '❌ Usage: /adduser 123456789';\n  } else {\n    const list = Array.isArray(staticData.authorized_users) ? staticData.authorized_users : [];\n    if (!list.includes(userId)) list.push(userId);\n    staticData.authorized_users = list;\n    reply = `✅ User ${userId} added to whitelist. Total authorized: ${list.length + 1} (owner + ${list.length})`;\n  }\n\n} else if (/^\\/removeuser\\s+/i.test(text)) {\n  const userId = parseInt(text.replace(/^\\/removeuser\\s+/i, '').trim());\n  if (!userId || isNaN(userId)) {\n    reply = '❌ Usage: /removeuser 123456789';\n  } else {\n    const list = Array.isArray(staticData.authorized_users) ? staticData.authorized_users : [];\n    staticData.authorized_users = list.filter(id => id !== userId);\n    reply = `✅ User ${userId} removed from whitelist.`;\n  }\n\n} else if (/^\\/setwebhookkey\\s+/i.test(text)) {\n  const key = text.replace(/^\\/setwebhookkey\\s+/i, '').trim();\n  if (key.length < 16) {\n    reply = '❌ Key too short. Use at least 16 characters.';\n  } else {\n    staticData.webhook_api_key = key;\n    reply = '✅ Webhook API key saved. Include X-Api-Key header in all webhook requests.';\n  }\n\n} else if (text === '/listusers') {\n  const list = Array.isArray(staticData.authorized_users) ? staticData.authorized_users : [];\n  reply = `👥 Authorized users:\\n• ${OWNER_ID} (owner)\\n${list.map(id => '• ' + id).join('\\n') || '(none)'}`;\n\n} else {\n  reply = '❓ Unknown command. Available: /settoken, /adduser, /removeuser, /setwebhookkey, /listusers';\n}\n\nreturn [{ json: { chat_id: chatId, reply } }];"
+      },
+      "name": "Save Bot Token",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        -1296
+      ],
+      "id": "save-bot-token"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chat_id }}",
+        "text": "={{ $json.reply }}",
+        "additionalFields": {}
+      },
+      "name": "Setup Reply",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        384,
+        -1280
+      ],
+      "id": "setup-reply",
+      "webhookId": "636a77d5-7ac6-4da8-b8c6-0f175bfa7254",
+      "credentials": {
+        "telegramApi": {
+          "id": "__CRED_ID__",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const staticData = $getWorkflowStaticData('global');\nconst botToken = staticData.telegram_bot_token;\nif (!botToken) {\n  throw new Error('Bot token not set. Send /settoken YOUR_BOT_TOKEN to the bot first.');\n}\n\nconst item = $input.first();\nconst fileId = $('Telegram Trigger').first().json.message?.voice?.file_id;\nif (!fileId) throw new Error('No voice file_id found in Telegram message');\n\nreturn [{ json: {\n  bot_token: botToken,\n  file_id: fileId,\n  chat_id: item.json.chat_id,\n  is_voice: true,\n  voice_mime_type: item.json.voice_mime_type || 'audio/ogg',\n} }];"
+      },
+      "name": "Read Bot Token",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        48,
+        -704
+      ],
+      "id": "read-bot-token"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.telegram.org/bot{{ $json.bot_token }}/getFile",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "file_id",
+              "value": "={{ $json.file_id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Get Voice File Path",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        272,
+        -448
+      ],
+      "id": "get-voice-file-path"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.telegram.org/file/bot{{ $('Read Bot Token').first().json.bot_token }}/{{ $json.result.file_path }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "name": "Download Voice File",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        -704
+      ],
+      "id": "download-voice-file"
+    },
+    {
+      "parameters": {
+        "jsCode": "const fileInfo = $input.first().json;\nconst fileUri = fileInfo.file && fileInfo.file.uri;\nif (!fileUri) {\n  throw new Error('No file URI from Gemini Files upload: ' + JSON.stringify(fileInfo));\n}\n\nconst tokenNode = $('Read Bot Token').first().json;\nconst voiceMime = tokenNode.voice_mime_type || 'audio/ogg';\n\nconst requestBody = {\n  contents: [{\n    parts: [\n      { file_data: { mime_type: voiceMime, file_uri: fileUri } },\n      { text: 'Transcribe this audio accurately. Return ONLY the transcription, nothing else.' }\n    ]\n  }],\n  generationConfig: { temperature: 0 },\n};\n\nreturn [{ json: {\n  requestBody,\n  chat_id: tokenNode.chat_id,\n  is_voice: true,\n  voice_mime_type: voiceMime,\n} }];"
+      },
+      "name": "Prepare STT Request",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        656,
+        -704
+      ],
+      "id": "prepare-stt-request"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/upload/v1beta/files?uploadType=media",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googlePalmApi",
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "name": "Upload to Gemini Files",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        560,
+        -704
+      ],
+      "id": "16e3b3ab-0163-4f39-889e-58eac2d5ab9e",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "__CRED_ID__",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first();\nconst json = item.json;\nconst fromId = json.from_id || 0;\nconst staticData = $getWorkflowStaticData('global');\nconst OWNER_ID = __TELEGRAM_CHAT_ID__;\nconst whitelist = Array.isArray(staticData.authorized_users) ? staticData.authorized_users : [];\n\nlet authorized = false;\nif (fromId > 0) {\n  authorized = (fromId === OWNER_ID) || whitelist.includes(fromId);\n} else {\n  const storedKey = staticData.webhook_api_key || '';\n  authorized = storedKey.length === 0 ? true : (() => {\n    const headers = json.headers || {};\n    const provided = headers['x-api-key'] || headers['X-Api-Key'] || '';\n    return provided === storedKey;\n  })();\n}\n\nreturn [{ json: { ...json, authorized } }];"
+      },
+      "name": "Check Authorization",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        288,
+        -1520
+      ],
+      "id": "ef9d5aa4-2376-4182-8af7-f5074e6bc89d"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "auth-cond",
+              "leftValue": "={{ String($json.authorized) }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "rightType": "value"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "name": "Is Authorized?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        336,
+        -944
+      ],
+      "id": "3bcd955e-aaa5-4fcb-8a7c-07fe2482cfc8"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chat_id }}",
+        "text": "⛔ Access denied. This assistant is private.",
+        "additionalFields": {}
+      },
+      "name": "Unauthorized Reply",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1264,
+        -656
+      ],
+      "id": "f3584484-399d-45a3-966b-64401f8ba646",
+      "webhookId": "2c222777-63e4-4413-846c-9a8e499b5f0b",
+      "credentials": {
+        "telegramApi": {
+          "id": "__CRED_ID__",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "photo-cond-1",
+              "leftValue": "={{ $json.is_photo }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "is-photo-input",
+      "name": "Is Photo Input?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        400,
+        -1136
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const staticData = $getWorkflowStaticData('global');\nconst botToken = staticData.telegram_bot_token;\nif (!botToken) throw new Error('Bot token not set. Send /settoken YOUR_BOT_TOKEN first.');\nconst item = $input.first();\nreturn [{ json: {\n  bot_token: botToken,\n  photo_file_id: item.json.photo_file_id,\n  chat_id: item.json.chat_id,\n  caption: item.json.caption || '',\n  is_voice: false\n}}];"
+      },
+      "id": "get-photo-token",
+      "name": "Get Photo Token",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        -896
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://api.telegram.org/bot{{ $json.bot_token }}/getFile",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "file_id",
+              "value": "={{ $json.photo_file_id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "get-photo-file-path",
+      "name": "Get Photo File Path",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        720,
+        -896
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://api.telegram.org/file/bot{{ $('Get Photo Token').first().json.bot_token }}/{{ $json.result.file_path }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "id": "download-photo",
+      "name": "Download Photo",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        -760
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://catbox.moe/user/api.php",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "reqtype",
+              "value": "fileupload"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "fileToUpload",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          }
+        }
+      },
+      "id": "upload-to-catbox",
+      "name": "Upload to Catbox",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1040,
+        -760
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first();\n// Direct Telegram file URL — publicly accessible HTTPS, no external hosting needed\nconst imageUrl = item.json.image_url;\nconst caption = item.json.caption || '';\nconst chat_id = item.json.chat_id;\n\nconst userText = caption || 'Analyze this aviation maintenance image. Identify any visible text, part numbers, serial numbers, fault codes, and components. Provide relevant maintenance guidance with ATA chapter references if applicable.';\n\nconst messages = [\n  { role: 'system', content: 'You are Cortana, an AI aviation maintenance assistant. You help technicians interpret maintenance photos, wiring diagrams, damage assessments, component images, and fault code screenshots. Extract all visible text and part numbers. Provide precise, ATA-referenced guidance.' },\n  { role: 'user', content: [\n    { type: 'image_url', image_url: { url: imageUrl } },\n    { type: 'text', text: userText }\n  ]}\n];\n\nreturn [{ json: {\n  requestBody: { model: 'gpt-4o', messages, max_tokens: 1000 },\n  chat_id,\n  image_url: imageUrl\n}}];"
+      },
+      "id": "build-vision-request",
+      "name": "Build Vision Request",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        -896
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify($json.requestBody) }}",
+        "options": {}
+      },
+      "id": "openai-vision-call",
+      "name": "OpenAI Vision Call",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1360,
+        -896
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "__CRED_ID__",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first();\nconst response = item.json;\nconst visionAnalysis = response.choices?.[0]?.message?.content || '';\n\n// Support both Telegram path (Build Vision Request) and dashboard path (Build Dashboard Vision Request)\nlet visionData, caption;\ntry {\n  visionData = $('Build Vision Request').first().json;\n  caption = $('Get Photo Token').first().json.caption || '';\n} catch (e) {\n  visionData = $('Build Dashboard Vision Request').first().json;\n  caption = '';  // Dashboard path: user text is already in chatInput\n}\n\nconst captionLine = caption ? `\\nUser question: ${caption}` : '';\nconst text = `[Image Analysis]\\n${visionAnalysis}${captionLine}\\n\\nSearch the knowledge base for any part numbers, fault codes, ATA references, or components identified above and provide relevant maintenance guidance.`;\n\nreturn [{ json: {\n  text,\n  chat_id: visionData.chat_id,\n  is_voice: false,\n  is_photo: true\n}}];"
+      },
+      "id": "extract-vision-response",
+      "name": "Extract Vision Response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1520,
+        -896
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "research-cond-1",
+              "leftValue": "={{ $json.text || '' }}",
+              "rightValue": "^/research(\\s|$)",
+              "operator": {
+                "type": "string",
+                "operation": "regex"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "is-research-command",
+      "name": "Is Research Command?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        240,
+        -1296
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first();\nconst text = item.json.text || '';\nconst chatId = item.json.chat_id;\n\nlet topic = null;\nlet sources = [];\n\nif (text.startsWith('/research ')) {\n  const rest = text.replace('/research ', '').trim();\n  const parts = rest.split(/\\s+/);\n  const urls = parts.filter(p => p.startsWith('http'));\n  const nonUrls = parts.filter(p => !p.startsWith('http'));\n  topic = nonUrls.join(' ') || rest;\n  sources = urls;\n}\n\nif (!topic) {\n  // Empty /research command — send usage hint\n  return [{ json: { error: true, chat_id: chatId, topic: null } }];\n}\n\nreturn [{ json: { topic, sources, chat_id: chatId, error: false } }];"
+      },
+      "id": "parse-research-command",
+      "name": "Parse Research Command",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        400,
+        -1296
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chat_id }}",
+        "text": "={{ $json.error ? 'Usage: /research <topic> [optional urls]\\n\\nExample:\\n/research Boeing 737 hydraulic system' : ('Researching *' + $json.topic + '*...\\n\\nGenerating report, mind map, and audio podcast. This takes 3–5 minutes. Results will be sent as they arrive.') }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "research-ack",
+      "name": "Research ACK",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        560,
+        -1296
+      ],
+      "webhookId": "69cf4de1-f4b6-4a46-834f-8568521cb09e",
+      "credentials": {
+        "telegramApi": {
+          "id": "__CRED_ID__",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first();\n// If it was an error (empty /research), stop here — ACK already sent\nif (item.json.error) return [];\n\nconst staticData = $getWorkflowStaticData('global');\nconst botToken = staticData.telegram_bot_token;\nif (!botToken) throw new Error('Bot token not set. Send /settoken YOUR_BOT_TOKEN first.');\n\nconst parseData = $('Parse Research Command').first().json;\nreturn [{ json: {\n  bot_token: botToken,\n  chat_id: parseData.chat_id,\n  topic: parseData.topic,\n  sources: parseData.sources || []\n}}];"
+      },
+      "id": "read-research-token",
+      "name": "Read Research Token",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        720,
+        -1296
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://prime-wahoo-legally.ngrok-free.app/research",
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ topic: $json.topic, sources: $json.sources, artifact_types: ['audio', 'report', 'mindmap'], bot_token: $json.bot_token, chat_id: $json.chat_id }) }}",
+        "options": {
+          "timeout": 600000
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Research-Token",
+              "value": "7420a2c00e037d41470410f099e62cb0e9c37004f848eb13eb70f94e4e52a274"
+            }
+          ]
+        }
+      },
+      "id": "call-research-server",
+      "name": "Call Research Server",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        -1296
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first();\nconst text = item.json.text || '';\nconst cleanText = text.startsWith('/cortana ')\n  ? text.slice(9).trim()\n  : text === '/cortana' ? '' : text;\nreturn [{ json: { ...item.json, text: cleanText } }];"
+      },
+      "id": "strip-cortana-prefix",
+      "name": "Strip Cortana Prefix",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        -1216
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "dashboard-image-cond",
+              "leftValue": "={{ $json.image_url }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "is-dashboard-image-id",
+      "name": "Is Dashboard Image?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        800,
+        -836
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const imageUrl = $json.image_url;\nconst userText = $json.text || 'Analyse this image for aviation maintenance context.';\nreturn [{\n  json: {\n    requestBody: {\n      model: 'gpt-4o',\n      messages: [{\n        role: 'user',\n        content: [\n          { type: 'text', text: userText },\n          { type: 'image_url', image_url: { url: imageUrl, detail: 'high' } }\n        ]\n      }],\n      max_tokens: 1000\n    },\n    chat_id: $json.chat_id\n  }\n}];"
+      },
+      "id": "build-dashboard-vision-id",
+      "name": "Build Dashboard Vision Request",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1100,
+        -936
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "dashboard-pdf-cond",
+              "leftValue": "={{ $json.pdf_content }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "is-dashboard-pdf-id",
+      "name": "Is Dashboard PDF?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        800,
+        -686
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const clean = $json.pdf_content\n  .replace(/\\r/g, ' ').replace(/\\t/g, ' ')\n  .replace(/[\\u201C\\u201D]/g, \"'\").replace(/[\\u2018\\u2019]/g, \"'\")\n  .trim();\nconst combined = '[Document: ' + $json.file_name + ']\\n\\n' + clean + '\\n\\n---\\nUser question: ' + ($json.text || 'Analyse this document.');\nreturn [{ json: { ...$json, text: combined } }];"
+      },
+      "id": "prepare-pdf-context-id",
+      "name": "Prepare PDF Context",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1100,
+        -686
+      ]
+    },
+    {
+      "id": "build-tg-photo-url",
+      "name": "Build Telegram Photo URL",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        -896
+      ],
+      "parameters": {
+        "jsCode": "const botToken = $('Get Photo Token').first().json.bot_token;\nconst filePath = $input.first().json.result.file_path;\nconst chat_id = $('Get Photo Token').first().json.chat_id;\nconst caption = $('Get Photo Token').first().json.caption || '';\n\nreturn [{ json: {\n  image_url: `https://api.telegram.org/file/bot${botToken}/${filePath}`,\n  chat_id,\n  caption\n}}];"
+      }
+    },
+    {
+      "id": "b737-classic-qdrant",
+      "name": "B737 Classic KB",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+      "typeVersion": 1.3,
+      "position": [
+        784,
+        -1344
+      ],
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "search_b737_classic_kb",
+        "toolDescription": "Search the Boeing 737 Classic (100/200/300/400/500) knowledge base. Use for AMM tasks, CMM procedures, WDM wiring diagrams, IPC part numbers, SRM structural repairs, and FIM fault isolation for B737 Classic variants.",
+        "qdrantCollection": {
+          "__rl": true,
+          "value": "b737_classic_kb",
+          "mode": "id"
+        },
+        "options": {
+          "topK": 6
+        }
+      },
+      "credentials": {
+        "qdrantApi": {
+          "id": "__CRED_ID__",
+          "name": "QdrantApi account"
+        }
+      }
+    },
+    {
+      "id": "b737-classic-gemini",
+      "name": "B737 Classic Embeddings",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        848,
+        -1200
+      ],
+      "parameters": {
+        "modelName": "models/gemini-embedding-2-preview"
+      },
+      "credentials": {
+        "googlePalmApi": {
+          "id": "__CRED_ID__",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "id": "b737-ng-qdrant",
+      "name": "B737 NG KB",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+      "typeVersion": 1.3,
+      "position": [
+        784,
+        -1504
+      ],
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "search_b737_ng_kb",
+        "toolDescription": "Search the Boeing 737 NG (600/700/800/900) knowledge base. Use for AMM tasks, CMM procedures, WDM wiring diagrams, IPC part numbers, SRM structural repairs, and FIM fault isolation for B737 NG variants (including B737-800).",
+        "qdrantCollection": {
+          "__rl": true,
+          "value": "b737_ng_kb",
+          "mode": "id"
+        },
+        "options": {
+          "topK": 6
+        }
+      },
+      "credentials": {
+        "qdrantApi": {
+          "id": "__CRED_ID__",
+          "name": "QdrantApi account"
+        }
+      }
+    },
+    {
+      "id": "b737-ng-gemini",
+      "name": "B737 NG Embeddings",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        848,
+        -1360
+      ],
+      "parameters": {
+        "modelName": "models/gemini-embedding-2-preview"
+      },
+      "credentials": {
+        "googlePalmApi": {
+          "id": "__CRED_ID__",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "id": "b757-qdrant",
+      "name": "B757 KB",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+      "typeVersion": 1.3,
+      "position": [
+        784,
+        -1664
+      ],
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "search_b757_kb",
+        "toolDescription": "Search the Boeing 757 (200/300) knowledge base. Use for AMM tasks, CMM procedures, WDM wiring diagrams, IPC part numbers, SRM structural repairs, and FIM fault isolation for B757 variants.",
+        "qdrantCollection": {
+          "__rl": true,
+          "value": "b757_kb",
+          "mode": "id"
+        },
+        "options": {
+          "topK": 6
+        }
+      },
+      "credentials": {
+        "qdrantApi": {
+          "id": "__CRED_ID__",
+          "name": "QdrantApi account"
+        }
+      }
+    },
+    {
+      "id": "b757-gemini",
+      "name": "B757 Embeddings",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        848,
+        -1520
+      ],
+      "parameters": {
+        "modelName": "models/gemini-embedding-2-preview"
+      },
+      "credentials": {
+        "googlePalmApi": {
+          "id": "__CRED_ID__",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "id": "is-tsc-command",
+      "name": "Is TSC Command?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        240,
+        -1376
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "tsc-cond-1",
+              "leftValue": "={{ $json.text || '' }}",
+              "rightValue": "^/tsc(\\s|$)",
+              "operator": {
+                "type": "string",
+                "operation": "regex"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "check-tsc-active",
+      "name": "Check TSC Active",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        400,
+        -1456
+      ],
+      "parameters": {
+        "jsCode": "const data = $getWorkflowStaticData('global');\nconst sessions = data.tsc_sessions || {};\nconst item = $('Normalize Input').first().json;\nconst chatId = item.chat_id;\nconst session = sessions[chatId];\nreturn [{ json: { ...item, tsc_active: !!(session && session.active), tsc_session: session || null } }];"
+      }
+    },
+    {
+      "id": "is-in-tsc",
+      "name": "Is In TSC?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        560,
+        -1456
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "in-tsc-cond-1",
+              "leftValue": "={{ $json.tsc_active }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "prepare-tsc-chat",
+      "name": "Prepare TSC Chat Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        720,
+        -1456
+      ],
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nconst session = item.tsc_session || {};\nconst ctxParts = ['[TSC SESSION ACTIVE]'];\nif (session.aircraft_type) ctxParts.push('Aircraft: ' + session.aircraft_type);\nif (session.ata_chapter) ctxParts.push('ATA: ' + session.ata_chapter);\nif (session.fault) ctxParts.push('Reported fault: ' + session.fault);\nconst ctx = ctxParts.join(' | ');\nreturn [{ json: { ...item, text: ctx + '\\n' + (item.text || '') } }];"
+      }
+    },
+    {
+      "id": "parse-tsc-command",
+      "name": "Parse TSC Command",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        -1376
+      ],
+      "parameters": {
+        "jsCode": "const data = $getWorkflowStaticData('global');\nconst item = $('Normalize Input').first().json;\nconst text = (item.text || '').trim();\nconst match = text.match(/^\\/tsc\\s*(\\w+)?(.*)$/i);\nconst action = match ? (match[1] || 'chat').toLowerCase() : 'chat';\nconst rest = match ? (match[2] || '').trim() : text;\nconst chatId = item.chat_id;\nconst sessions = data.tsc_sessions || {};\n\nif (action === 'start') {\n  sessions[chatId] = { active: true, aircraft_type: '', ata_chapter: '', fault: '', created_at: new Date().toISOString() };\n  data.tsc_sessions = sessions;\n} else if (action === 'end') {\n  if (sessions[chatId]) sessions[chatId].active = false;\n  data.tsc_sessions = sessions;\n}\n\nreturn [{ json: { ...item, tsc_action: action, tsc_rest: rest,\n  tsc_session: sessions[chatId] || null, tsc_active: !!(sessions[chatId] && sessions[chatId].active) } }];"
+      }
+    },
+    {
+      "id": "route-tsc-action",
+      "name": "Route TSC Action",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        720,
+        -1376
+      ],
+      "parameters": {
+        "mode": "rules",
+        "rules": {
+          "values": [
+            {
+              "outputKey": "end",
+              "conditions": {
+                "options": {
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.tsc_action }}",
+                    "rightValue": "end",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "fallbackOutput": "extra",
+        "options": {
+          "allMatchingOutputs": false
+        }
+      }
+    },
+    {
+      "id": "is-document",
+      "name": "Is Document?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        560,
+        -1136
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "doc-cond-1",
+              "leftValue": "={{ $json.is_document }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "get-doc-token",
+      "name": "Get Doc Token",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        720,
+        -1072
+      ],
+      "parameters": {
+        "jsCode": "const data = $getWorkflowStaticData('global');\nconst item = $('Normalize Input').first().json;\nconst botToken = data.telegram_bot_token || '';\nreturn [{ json: { bot_token: botToken, file_id: item.doc_file_id, chat_id: item.chat_id, doc_file_name: item.doc_file_name, doc_mime_type: item.doc_mime_type } }];"
+      }
+    },
+    {
+      "id": "get-doc-file-path",
+      "name": "Get Doc File Path",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        -1072
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ \"https://api.telegram.org/bot\" + $json.bot_token + \"/getFile?file_id=\" + $json.file_id }}",
+        "options": {}
+      }
+    },
+    {
+      "id": "is-excel",
+      "name": "Is Excel?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1040,
+        -1072
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "excel-cond-1",
+              "leftValue": "={{ $('Normalize Input').first().json.doc_mime_type }}",
+              "rightValue": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "excel-cond-2",
+              "leftValue": "={{ $('Normalize Input').first().json.doc_mime_type }}",
+              "rightValue": "application/vnd.ms-excel",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "build-excel-payload",
+      "name": "Build Excel Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        -1008
+      ],
+      "parameters": {
+        "jsCode": "const docToken = $('Get Doc Token').first().json;\nconst filePath = $json.result.file_path;\nconst normInput = $('Normalize Input').first().json;\nreturn [{ json: {\n  fileUrl: 'https://api.telegram.org/file/bot' + docToken.bot_token + '/' + filePath,\n  fileName: normInput.doc_file_name || 'report.xlsx',\n  mimeType: normInput.doc_mime_type,\n  chat_id: normInput.chat_id,\n  bot_token: docToken.bot_token\n} }];"
+      }
+    },
+    {
+      "id": "run-maintenance-importer",
+      "name": "Run Maintenance Importer",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.1,
+      "position": [
+        1360,
+        -1008
+      ],
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "ZtC2V2dtT9GsJRbg",
+          "mode": "id"
+        },
+        "options": {
+          "waitForSubWorkflow": false
+        }
+      }
+    },
+    {
+      "id": "build-doc-cf-payload",
+      "name": "Build Doc CF Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        -1136
+      ],
+      "parameters": {
+        "jsCode": "const docToken = $('Get Doc Token').first().json;\nconst filePath = $json.result.file_path;\nconst normInput = $('Normalize Input').first().json;\nreturn [{ json: {\n  fileUrl: 'https://api.telegram.org/file/bot' + docToken.bot_token + '/' + filePath,\n  fileName: normInput.doc_file_name || 'document.pdf',\n  mimeType: normInput.doc_mime_type || 'application/pdf',\n  chat_id: normInput.chat_id,\n  bot_token: docToken.bot_token\n} }];"
+      }
+    },
+    {
+      "id": "ingest-document",
+      "name": "Ingest Document",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1360,
+        -1136
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://europe-west1-n8n-2026-486511.cloudfunctions.net/split-pdf",
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ fileUrl: $json.fileUrl, fileName: $json.fileName, mimeType: $json.mimeType }) }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-CF-Token",
+              "value": "={{ $env.CF_AUTH_TOKEN || \"\" }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 300000
+        }
+      }
+    },
+    {
+      "id": "doc-ingestion-reply",
+      "name": "Doc Ingestion Reply",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1520,
+        -1136
+      ],
+      "parameters": {
+        "chatId": "={{ $('Normalize Input').first().json.chat_id }}",
+        "text": "={{ '✅ Document \"' + $('Normalize Input').first().json.doc_file_name + '\" ingested successfully into the knowledge base.\\n' + ($json.chunks_stored ? $json.chunks_stored + ' chunks stored.' : '') }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "credentials": {
+        "telegramApi": {
+          "id": "__CRED_ID__",
+          "name": "Telegram account"
+        }
+      },
+      "webhookId": "ccf7f61b-edfc-4c2b-84d9-da59e18df7ab"
+    },
+    {
+      "id": "is-mcc-command",
+      "name": "Is MCC Command?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        240,
+        -1456
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "mcc-cond-1",
+              "leftValue": "={{ $json.text || '' }}",
+              "rightValue": "^/mcc(\\s|$)",
+              "operator": {
+                "type": "string",
+                "operation": "regex"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "strip-mcc-prefix",
+      "name": "Strip MCC Prefix",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        400,
+        -1536
+      ],
+      "parameters": {
+        "jsCode": "const item = $('Normalize Input').first().json;\nconst text = item.text || '';\nconst cleanText = text.replace(/^\\/mcc\\s*/i, '').trim();\nreturn [{ json: { ...item, text: cleanText } }];"
+      }
+    },
+    {
+      "id": "call-morpheus",
+      "name": "Call MORPHEUS",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.1,
+      "position": [
+        560,
+        -1536
+      ],
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "dzWJu3z0mOHdCGwQ",
+          "mode": "id"
+        },
+        "options": {
+          "waitForSubWorkflow": false
+        }
+      }
+    }
+  ],
+  "connections": {
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Input": {
+      "main": [
+        [
+          {
+            "node": "Check Authorization",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "index": 0,
+            "node": "AI Agent",
+            "type": "ai_languageModel"
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "index": 0,
+            "node": "AI Agent",
+            "type": "ai_memory"
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "index": 0,
+            "node": "Normalize Input",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Normalize Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Was Voice Input?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qdrant Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Qdrant Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Media Response?": {
+      "main": [
+        [
+          {
+            "node": "Extract Media Ref",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Media Ref": {
+      "main": [
+        [
+          {
+            "node": "Download Media (Private)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Media (Private)": {
+      "main": [
+        [
+          {
+            "node": "Check Media Size",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Media Size": {
+      "main": [
+        [
+          {
+            "node": "Route Media",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route Media": {
+      "main": [
+        [
+          {
+            "node": "Send Photo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Image as Document",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Video",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "File Too Large Notice",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Photo": {
+      "main": [
+        [
+          {
+            "node": "Send Text After Media",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Image as Document": {
+      "main": [
+        [
+          {
+            "node": "Send Text After Media",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Video": {
+      "main": [
+        [
+          {
+            "node": "Send Text After Media",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Voice Input?": {
+      "main": [
+        [
+          {
+            "node": "Read Bot Token",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Is Photo Input?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare STT Request": {
+      "main": [
+        [
+          {
+            "node": "Call Gemini STT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call Gemini STT": {
+      "main": [
+        [
+          {
+            "node": "Set Transcribed Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Transcribed Text": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Was Voice Input?": {
+      "main": [
+        [
+          {
+            "node": "Prepare TTS Request",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Is Media Response?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare TTS Request": {
+      "main": [
+        [
+          {
+            "node": "Gemini TTS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini TTS": {
+      "main": [
+        [
+          {
+            "node": "Convert PCM to WAV",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert PCM to WAV": {
+      "main": [
+        [
+          {
+            "node": "Send Voice Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Voice Message": {
+      "main": [
+        [
+          {
+            "node": "Has Media in Voice?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Media in Voice?": {
+      "main": [
+        [
+          {
+            "node": "Download Voice Media",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Download Voice Media": {
+      "main": [
+        [
+          {
+            "node": "Send Media After Voice",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Setup Command?": {
+      "main": [
+        [
+          {
+            "node": "Save Bot Token",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Is Research Command?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Bot Token": {
+      "main": [
+        [
+          {
+            "node": "Setup Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Bot Token": {
+      "main": [
+        [
+          {
+            "node": "Get Voice File Path",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Voice File Path": {
+      "main": [
+        [
+          {
+            "node": "Download Voice File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Voice File": {
+      "main": [
+        [
+          {
+            "node": "Call Gemini STT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload to Gemini Files": {
+      "main": [
+        [
+          {
+            "node": "Prepare STT Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Authorization": {
+      "main": [
+        [
+          {
+            "node": "Is Authorized?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Authorized?": {
+      "main": [
+        [
+          {
+            "node": "Is Setup Command?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Unauthorized Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Photo Input?": {
+      "main": [
+        [
+          {
+            "node": "Get Photo Token",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Is Document?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Photo Token": {
+      "main": [
+        [
+          {
+            "node": "Get Photo File Path",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Photo File Path": {
+      "main": [
+        [
+          {
+            "node": "Build Telegram Photo URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Vision Request": {
+      "main": [
+        [
+          {
+            "node": "OpenAI Vision Call",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Vision Call": {
+      "main": [
+        [
+          {
+            "node": "Extract Vision Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Vision Response": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Research Command?": {
+      "main": [
+        [
+          {
+            "node": "Parse Research Command",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Is TSC Command?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Research Command": {
+      "main": [
+        [
+          {
+            "node": "Research ACK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Research ACK": {
+      "main": [
+        [
+          {
+            "node": "Read Research Token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Research Token": {
+      "main": [
+        [
+          {
+            "node": "Call Research Server",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call Research Server": {
+      "main": [
+        []
+      ]
+    },
+    "Strip Cortana Prefix": {
+      "main": [
+        [
+          {
+            "node": "Is Voice Input?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Dashboard Image?": {
+      "main": [
+        [
+          {
+            "node": "Build Dashboard Vision Request",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Is Dashboard PDF?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Dashboard Vision Request": {
+      "main": [
+        [
+          {
+            "node": "OpenAI Vision Call",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Dashboard PDF?": {
+      "main": [
+        [
+          {
+            "node": "Prepare PDF Context",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare PDF Context": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Telegram Photo URL": {
+      "main": [
+        [
+          {
+            "node": "Build Vision Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "B737 Classic Embeddings": {
+      "ai_embedding": [
+        [
+          {
+            "node": "B737 Classic KB",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "B737 Classic KB": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "B737 NG Embeddings": {
+      "ai_embedding": [
+        [
+          {
+            "node": "B737 NG KB",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "B737 NG KB": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "B757 Embeddings": {
+      "ai_embedding": [
+        [
+          {
+            "node": "B757 KB",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "B757 KB": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is TSC Command?": {
+      "main": [
+        [
+          {
+            "node": "Parse TSC Command",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Check TSC Active",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse TSC Command": {
+      "main": [
+        [
+          {
+            "node": "Route TSC Action",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route TSC Action": {
+      "main": [
+        [
+          {
+            "node": "Prepare TSC Chat Input",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare TSC Chat Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check TSC Active": {
+      "main": [
+        [
+          {
+            "node": "Is In TSC?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is In TSC?": {
+      "main": [
+        [
+          {
+            "node": "Prepare TSC Chat Input",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Is MCC Command?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare TSC Chat Input": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is MCC Command?": {
+      "main": [
+        [
+          {
+            "node": "Strip MCC Prefix",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Strip Cortana Prefix",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Strip MCC Prefix": {
+      "main": [
+        [
+          {
+            "node": "Call MORPHEUS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Document?": {
+      "main": [
+        [
+          {
+            "node": "Get Doc Token",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Is Dashboard Image?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Doc Token": {
+      "main": [
+        [
+          {
+            "node": "Get Doc File Path",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Doc File Path": {
+      "main": [
+        [
+          {
+            "node": "Is Excel?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Excel?": {
+      "main": [
+        [
+          {
+            "node": "Build Excel Payload",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Build Doc CF Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Excel Payload": {
+      "main": [
+        [
+          {
+            "node": "Run Maintenance Importer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Doc CF Payload": {
+      "main": [
+        [
+          {
+            "node": "Ingest Document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ingest Document": {
+      "main": [
+        [
+          {
+            "node": "Doc Ingestion Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "timezone": "Europe/Lisbon"
+  },
+  "active": true
+}

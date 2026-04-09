@@ -1,0 +1,146 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# CORTANA — Tier 1: Technician
+# Access: Fleet technical manuals only (AMM, CMM, WDM, IPC, SRM)
+# Users: Line technicians, hangar technicians
+# Agent: Cortana Technician — deep AMM procedures, fault isolation, parts
+# ─────────────────────────────────────────────────────────────────────────────
+name: cortana-technician
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: n8n
+      POSTGRES_USER: n8n
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U n8n"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  qdrant:
+    image: qdrant/qdrant:v1.13.4
+    restart: unless-stopped
+    environment:
+      QDRANT__STORAGE__STORAGE_PATH: /qdrant/storage
+    volumes:
+      - qdrant_data:/qdrant/storage
+    ports:
+      - "6333:6333"
+    healthcheck:
+      test: ["CMD-SHELL", "timeout 1 bash -c 'echo > /dev/tcp/localhost/6333' 2>/dev/null && echo ok || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 8
+
+  split-pdf:
+    build:
+      context: ../../../services/split-pdf
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY}
+      QDRANT_URL: http://qdrant:6333
+      QDRANT_API_KEY: ""
+      CF_AUTH_TOKEN: ${CF_AUTH_TOKEN}
+      PORT: 8080
+    ports:
+      - "8099:8080"
+    depends_on:
+      qdrant:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "python3 -c \"import urllib.request, urllib.error, sys; req = urllib.request.Request('http://localhost:8080/'); code = 200; exec('try:\\n urllib.request.urlopen(req)\\nexcept urllib.error.HTTPError as e:\\n code = e.code'); sys.exit(0 if code == 401 else 1)\" 2>/dev/null || exit 1",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  n8n:
+    image: n8nio/n8n:1.93.0
+    restart: unless-stopped
+    environment:
+      # Database
+      DB_TYPE: postgresdb
+      DB_POSTGRESDB_HOST: postgres
+      DB_POSTGRESDB_PORT: 5432
+      DB_POSTGRESDB_DATABASE: n8n
+      DB_POSTGRESDB_USER: n8n
+      DB_POSTGRESDB_PASSWORD: ${POSTGRES_PASSWORD}
+      # n8n core
+      N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY}
+      N8N_HOST: ${N8N_HOST:-localhost}
+      N8N_PORT: 5678
+      N8N_PROTOCOL: ${N8N_PROTOCOL:-http}
+      WEBHOOK_URL: ${WEBHOOK_URL}
+      N8N_EDITOR_BASE_URL: ${WEBHOOK_URL}
+      # Execution
+      EXECUTIONS_MODE: regular
+      EXECUTIONS_DATA_PRUNE: "true"
+      EXECUTIONS_DATA_MAX_AGE: 168
+      N8N_RUNNERS_ENABLED: "true"
+      # Disable telemetry
+      N8N_DIAGNOSTICS_ENABLED: "false"
+      N8N_VERSION_NOTIFICATIONS_ENABLED: "false"
+      # AI API keys (used by workflow credentials via env)
+      CORTANA_TIER: technician
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      CF_AUTH_TOKEN: ${CF_AUTH_TOKEN}
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY}
+      SPLIT_PDF_URL: http://split-pdf:8080
+    ports:
+      - "5678:5678"
+    volumes:
+      - n8n_data:/home/node/.n8n
+    depends_on:
+      postgres:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:5678/healthz >/dev/null 2>&1 || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+
+  # One-shot init container: imports workflows into n8n DB using CLI
+  # Runs once after n8n is healthy, then exits (restart: no)
+  n8n-init:
+    image: n8nio/n8n:1.93.0
+    restart: "no"
+    environment:
+      DB_TYPE: postgresdb
+      DB_POSTGRESDB_HOST: postgres
+      DB_POSTGRESDB_PORT: 5432
+      DB_POSTGRESDB_DATABASE: n8n
+      DB_POSTGRESDB_USER: n8n
+      DB_POSTGRESDB_PASSWORD: ${POSTGRES_PASSWORD}
+      N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY}
+      CORTANA_TIER: technician
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      CF_AUTH_TOKEN: ${CF_AUTH_TOKEN}
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY}
+      SPLIT_PDF_URL: http://split-pdf:8080
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./workflows:/workflows:ro
+      - ./init:/init:ro
+    depends_on:
+      n8n:
+        condition: service_healthy
+    entrypoint: ["/bin/sh", "/init/setup.sh"]
+
+volumes:
+  postgres_data:
+  qdrant_data:
+  n8n_data:
