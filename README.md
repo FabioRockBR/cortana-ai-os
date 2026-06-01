@@ -101,7 +101,7 @@ python tools/batch_ingest.py \
   --collection b737_ng_kb
 ```
 
-Supports PDF, images (JPG/PNG), and video files. Large PDFs are auto-split.
+Supports PDF, images (JPG/PNG), wiring diagrams, and video files. Large PDFs are auto-split.
 
 Collections: `b737_classic_kb` · `b737_ng_kb` · `b757_kb` · `aircraft_maintenance_kb_v2`
 
@@ -109,6 +109,7 @@ Collections: `b737_classic_kb` · `b737_ng_kb` · `b757_kb` · `aircraft_mainten
 
 ## Supported Capabilities
 
+- **Engineering-diagram retrieval** — indexes and searches wiring diagrams (WDM), schematics, and figures across the manual set, using a multi-modal vector store over PDFs, images, and diagrams
 - **Voice I/O** — send voice messages, receive voice replies (pt-BR + English)
 - **Photo analysis** — send maintenance photos for damage/fault assessment
 - **Document ingestion** — send PDF directly to the bot to ingest into the KB
